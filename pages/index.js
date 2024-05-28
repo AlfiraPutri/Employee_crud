@@ -1,19 +1,51 @@
-import Head from 'next/head'
-import { BiUserPlus } from "react-icons/bi";
+'use-client'
+import Head from 'next/head';
+import { BiUserPlus, BiX, BiCheck } from "react-icons/bi";
 import Table from '../components/table';
 import Form from '../components/form';
-import { useState } from 'react';
-import { useSelector, useDispatch  } from 'react-redux';
-import { toggleChangeAction } from '../redux/reducer';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleChangeAction, deleteAction } from '../redux/reducer';
+import { deleteUser, getUsers } from '../lib/helper';
+import { useQueryClient } from 'react-query';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../firebase/config';
+import { signOut } from 'firebase/auth';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Home() {
-
-  const visible = useSelector((state) => state.app.client.toggleForm)
-  const dispatch = useDispatch()
+  const visible = useSelector((state) => state.app.client.toggleForm);
+  const deleteId = useSelector(state => state.app.client.deleteId);
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const handler = () => {
-    dispatch(toggleChangeAction())
-  }
+    dispatch(toggleChangeAction());
+  };
+
+  const deleteHandler = async () => {
+    if (deleteId) {
+      await deleteUser(deleteId);
+      await queryClient.prefetchQuery('users', getUsers);
+      await dispatch(deleteAction(null));
+    }
+  };
+
+  const cancelHandler = async () => {
+    await dispatch(deleteAction(null));
+  };
+
+  const [user, loading, error] = useAuthState(auth);
+  console.log({ user });
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/sign_up');
+    }
+  }, [user, loading]);
+
+
 
   return (
     <section>
@@ -24,25 +56,46 @@ export default function Home() {
       </Head>
 
       <main className='py-5'>
-        <h1 className='text-xl md:text-5xl text-center font-bold py-10'>Employee Management</h1>
+        <div className="flex justify-between items-center">
+          <h1 className='text-xl md:text-5xl text-center font-bold py-10'>Employee Management</h1>
+          <button onClick={() => signOut(auth)} className='flex bg-red-500 text-white px-4 py-2 border rounded-md hover:bg-red-600'>
+            Logout
+          </button>
+        </div>
+       
 
         <div className="container mx-auto flex justify-between py-5 border-b">
-            <div className="left flex gap-3">
-                <button onClick={handler} className='flex bg-indigo-500 text-white px-4 py-2 border rounded-md hover:bg-grary-50 hover:border-indigo-500 hover:text-gray-800'>
-                  Add Employee <span className='px-1'><BiUserPlus size={23}></BiUserPlus></span>
-                </button>
-            </div>
+          <div className="left flex gap-3">
+            <button onClick={handler} className='flex bg-indigo-500 text-white px-4 py-2 border rounded-md hover:bg-grary-50 hover:border-indigo-500 hover:text-gray-800'>
+              Add Employee <span className='px-1'><BiUserPlus size={23}></BiUserPlus></span>
+            </button>
+          </div>
+          { deleteId ? <DeleteComponent deleteHandler={deleteHandler} cancelHandler={cancelHandler} /> : <></>}
         </div>
 
         {/* collapsable form */}
-        { visible ? <Form></Form> : <></>}
+        { visible ? <Form /> : <></>}
 
         {/* table */}
         <div className="container mx-auto">
-          <Table></Table>
+          <Table />
         </div>
 
       </main>
     </section>
-  )
+  );
+}
+
+function DeleteComponent({ deleteHandler, cancelHandler }) {
+  return (
+    <div className='flex gap-5'>
+      <button>Are you sure?</button>
+      <button onClick={deleteHandler} className='flex bg-red-500 text-white px-4 py-2 border rounded-md hover:bg-rose-500 hover:border-red-500 hover:text-gray-50'>
+        Yes <span className='px-1'><BiX color='rgb(255 255 255)' size={25} /></span>
+      </button>
+      <button onClick={cancelHandler} className='flex bg-green-500 text-white px-4 py-2 border rounded-md hover:bg-gree-500 hover:border-green-500 hover:text-gray-50'>
+        No <span className='px-1'><BiCheck color='rgb(255 255 255)' size={25} /></span>
+      </button>
+    </div>
+  );
 }

@@ -2,7 +2,7 @@
 /** Controller */
 import Users from '../model/user'
 
-// get : http://localhost:3000/api/users
+// get : https://employee-crud-flax.vercel.app/api/users
 export async function getUsers(req, res){
     try {
         const users = await Users.find({})
@@ -14,7 +14,7 @@ export async function getUsers(req, res){
     }
 }
 
-// get : http://localhost:3000/api/users/1
+// get : https://employee-crud-flax.vercel.app/api/users/1
 export async function getUser(req, res){
     try {
         const { userId } = req.query;
@@ -29,7 +29,7 @@ export async function getUser(req, res){
     }
 }
 
-// post : http://localhost:3000/api/users
+// post : https://employee-crud-flax.vercel.app/api/users
 export async function postUser(req, res){
     try {
         const formData = req.body;
@@ -42,7 +42,7 @@ export async function postUser(req, res){
     }
 }
 
-// put : http://localhost:3000/api/users/1
+// put : https://employee-crud-flax.vercel.app/api/users/1
 export async function putUser(req, res){
     try {
         const { userId } = req.query;
@@ -58,7 +58,7 @@ export async function putUser(req, res){
     }
 }
 
-// delete : http://localhost:3000/api/users/1
+// delete : https://employee-crud-flax.vercel.app/api/users/1
 export async function deleteUser(req, res){
     try {
         const { userId } = req.query;
