@@ -1,76 +1,123 @@
-import { useReducer } from "react"
-import { BiPlus } from 'react-icons/bi'
-import Success from "./success"
-import Bug from "./bug"
-import { useQueryClient, useMutation } from "react-query"
-import { addUser, getUsers } from "../lib/helper"
+import { BiPlus } from 'react-icons/bi';
+import Success from "./success";
+import Bug from "./bug";
+import { useQueryClient, useMutation } from "react-query";
+import { addUser, getUsers } from "../lib/helper";
 
-
-export default function AddUserForm({ formData, setFormData }){
-
-    const queryClient = useQueryClient()
+export default function AddUserForm({ formData, setFormData, onBack }) {
+    const queryClient = useQueryClient();
     const addMutation = useMutation(addUser, {
-        onSuccess : () => {
-            queryClient.prefetchQuery('users', getUsers)
+        onSuccess: () => {
+            queryClient.prefetchQuery('users', getUsers);
         }
-    })
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(Object.keys(formData).length == 0) return console.log("Don't have Form Data");
-        let { firstname, lastname, email, salary, date, status } = formData;
+        if (Object.keys(formData).length === 0) return console.log("Don't have Form Data");
+
+        const { firstname, lastname, email, salary, date, status } = formData;
 
         const model = {
-            name : `${firstname} ${lastname}`,
+            name: `${firstname} ${lastname}`,
             avatar: `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 10)}.jpg`,
-            email, salary, date, status : status ?? "Active"
-        }
+            email,
+            salary,
+            date,
+            status: status ?? "Active"
+        };
 
-        addMutation.mutate(model)
-    }
+        addMutation.mutate(model);
+    };
 
-    if(addMutation.isLoading) return <div>Loading!</div>
-    if(addMutation.isError) return <Bug message={addMutation.error.message}></Bug>
-    if(addMutation.isSuccess) return <Success message={"Added Successfully"}></Success>
+    if (addMutation.isLoading) return <div>Loading!</div>;
+    if (addMutation.isError) return <Bug message={addMutation.error.message}></Bug>;
+    if (addMutation.isSuccess) return <Success message={"Added Successfully"}></Success>;
 
     return (
-        <form className="grid lg:grid-cols-2 w-4/6 gap-4" onSubmit={handleSubmit}>
-            <div className="input-type">
-                <input type="text" onChange={setFormData} name="firstname" className="border w-full px-5 py-3 focus:outline-none rounded-md" placeholder="FirstName" />
+        <form className="w-full max-w-lg p-8 bg-white rounded-lg shadow-lg">
+            <div className="flex flex-col mb-4">
+                <label className="mb-2 font-medium text-gray-700" htmlFor="firstname">First Name</label>
+                <input 
+                    type="text" 
+                    onChange={setFormData} 
+                    name="firstname" 
+                    className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" 
+                    placeholder="First Name" 
+                />
             </div>
-            <div className="input-type">
-                <input type="text" onChange={setFormData} name="lastname" className="border w-full px-5 py-3 focus:outline-none rounded-md" placeholder="LastName" />
+            <div className="flex flex-col mb-4">
+                <label className="mb-2 font-medium text-gray-700" htmlFor="lastname">Last Name</label>
+                <input 
+                    type="text" 
+                    onChange={setFormData} 
+                    name="lastname" 
+                    className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" 
+                    placeholder="Last Name" 
+                />
             </div>
-            <div className="input-type">
-                <input type="text" onChange={setFormData} name="email" className="border w-full px-5 py-3 focus:outline-none rounded-md" placeholder="Email" />
+            <div className="flex flex-col mb-4">
+                <label className="mb-2 font-medium text-gray-700" htmlFor="email">Email</label>
+                <input 
+                    type="email" 
+                    onChange={setFormData} 
+                    name="email" 
+                    className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" 
+                    placeholder="Email" 
+                />
             </div>
-            <div className="input-type">
-                <input type="text" onChange={setFormData} name="salary" className="border w-full px-5 py-3 focus:outline-none rounded-md" placeholder="Salary" />
+            <div className="flex flex-col mb-4">
+                <label className="mb-2 font-medium text-gray-700" htmlFor="salary">Salary</label>
+                <input 
+                    type="number" 
+                    onChange={setFormData} 
+                    name="salary" 
+                    className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" 
+                    placeholder="Salary" 
+                />
             </div>
-            <div className="input-type">
-                <input type="date" onChange={setFormData} name="date" className="border px-5 py-3 focus:outline-none rounded-md" placeholder="Salary" />
+            <div className="flex flex-col mb-4">
+                <label className="mb-2 font-medium text-gray-700" htmlFor="date">Date</label>
+                <input 
+                    type="date" 
+                    onChange={setFormData} 
+                    name="date" 
+                    className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" 
+                />
             </div>
-
-
-            <div className="flex gap-10 items-center">
-                <div className="form-check">
-                    <input type="radio" onChange={setFormData} value="Active" id="radioDefault1" name="status" className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300  bg-white checked:bg-green-500 checked:border-green-500 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" />
-                    <label htmlFor="radioDefault1" className="inline-block tet-gray-800">
-                        Active
-                    </label>
+            <div className="flex flex-col mb-4">
+                <label className="mb-2 font-medium text-gray-700">Status</label>
+                <div className="flex items-center space-x-4">
+                    <div className="flex items-center">
+                        <input 
+                            type="radio" 
+                            onChange={setFormData} 
+                            value="Active" 
+                            id="radioActive" 
+                            name="status" 
+                            className="mr-2" 
+                        />
+                        <label htmlFor="radioActive" className="text-gray-700">Active</label>
+                    </div>
+                    <div className="flex items-center">
+                        <input 
+                            type="radio" 
+                            onChange={setFormData} 
+                            value="Inactive" 
+                            id="radioInactive" 
+                            name="status" 
+                            className="mr-2" 
+                        />
+                        <label htmlFor="radioInactive" className="text-gray-700">Inactive</label>
+                    </div>
                 </div>
-                <div className="form-check">
-                    <input type="radio" onChange={setFormData} value="Inactive" id="radioDefault2" name="status" className="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300  bg-white checked:bg-green-500 checked:border-green-500 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" />
-                    <label htmlFor="radioDefault2" className="inline-block tet-gray-800">
-                        Inactive
-                    </label>
-                </div>
             </div>
-
-            <button type="submit" className="flex justify-center text-md w-2/6 bg-green-500 text-white px-4 py-2 border rounded-md hover:bg-gray-50 hover:border-green-500 hover:text-green-500">
-             Add <span className="px-1"><BiPlus size={24}></BiPlus></span>
+            <button 
+                type="submit" 
+                onClick={handleSubmit}
+                className="flex items-center justify-center px-4 py-2 font-semibold text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                Add <BiPlus size={24} className="ml-2" />
             </button>
-
         </form>
-    )
+    );
 }
