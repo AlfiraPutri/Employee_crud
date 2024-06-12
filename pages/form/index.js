@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AddUserForm from '../../components/AddUserForm'; // Update this import path
+import AddUserForm from '../../components/addUserForm'; // Update this import path
 import { useRouter } from 'next/router';
 
 export default function IndexPage() {
