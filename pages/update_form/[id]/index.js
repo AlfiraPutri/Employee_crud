@@ -33,7 +33,10 @@ export default function UpdateFormPage() {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch(`https://employee-crud-flax.vercel.app/${id}`);
+                const response = await fetch(`https://employee-crud-flax.vercel.app/api/users/${id}`);
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
                 const data = await response.json();
                 setUserData(data);
                 const { name, email, salary, date, status } = data;
