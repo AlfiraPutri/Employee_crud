@@ -115,7 +115,7 @@ export default function AddUserForm({ formData, setFormData, onBack }) {
             <button 
                 type="submit" 
                 onClick={handleSubmit}
-                className="flex items-center justify-center px-4 py-2 font-semibold text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                className="flex items-center justify-center px-48 py-2 font-semibold text-white bg-blue-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
                 Add <BiPlus size={24} className="ml-2" />
             </button>
         </form>

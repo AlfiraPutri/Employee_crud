@@ -33,10 +33,7 @@ export default function UpdateFormPage() {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch(`https://employee-crud-flax.vercel.app/api/users/${id}`);
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.statusText}`);
-                }
+                const response = await fetch(`/api/users/${id}`);
                 const data = await response.json();
                 setUserData(data);
                 const { name, email, salary, date, status } = data;
@@ -77,58 +74,48 @@ export default function UpdateFormPage() {
     return (
         <div className="min-h-screen bg-gradient-to-r from-blue-100 to-indigo-200 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl w-full space-y-8">
-                <h1 className="text-3xl font-extrabold text-gray-900 text-center">Update User</h1>
+                <h1 className="text-3xl font-extrabold text-center text-indigo-700">Update User</h1>
                 <form className="bg-white shadow-lg rounded-lg p-8 space-y-6" onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        <div>
-                            <input
-                                type="text"
-                                onChange={handleFormDataChange}
-                                value={formData.firstname}
-                                name="firstname"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                placeholder="First Name"
-                            />
-                        </div>
-                        <div>
-                            <input
-                                type="text"
-                                onChange={handleFormDataChange}
-                                value={formData.lastname}
-                                name="lastname"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                placeholder="Last Name"
-                            />
-                        </div>
-                        <div>
-                            <input
-                                type="email"
-                                onChange={handleFormDataChange}
-                                value={formData.email}
-                                name="email"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                placeholder="Email"
-                            />
-                        </div>
-                        <div>
-                            <input
-                                type="number"
-                                onChange={handleFormDataChange}
-                                value={formData.salary}
-                                name="salary"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                                placeholder="Salary"
-                            />
-                        </div>
-                        <div>
-                            <input
-                                type="date"
-                                onChange={handleFormDataChange}
-                                value={formData.date}
-                                name="date"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                            />
-                        </div>
+                    <div className="flex flex-col space-y-4">
+                        <input
+                            type="text"
+                            onChange={handleFormDataChange}
+                            value={formData.firstname}
+                            name="firstname"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                            placeholder="First Name"
+                        />
+                        <input
+                            type="text"
+                            onChange={handleFormDataChange}
+                            value={formData.lastname}
+                            name="lastname"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                            placeholder="Last Name"
+                        />
+                        <input
+                            type="email"
+                            onChange={handleFormDataChange}
+                            value={formData.email}
+                            name="email"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                            placeholder="Email"
+                        />
+                        <input
+                            type="number"
+                            onChange={handleFormDataChange}
+                            value={formData.salary}
+                            name="salary"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                            placeholder="Salary"
+                        />
+                        <input
+                            type="date"
+                            onChange={handleFormDataChange}
+                            value={formData.date}
+                            name="date"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                        />
                         <div className="flex gap-10 items-center">
                             <div className="form-check">
                                 <input

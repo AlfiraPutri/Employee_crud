@@ -20,18 +20,17 @@ export default function IndexPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-100 to-indigo-200 flex flex-col justify-center items-center">
-      <div className="w-full max-w-3xl p-6 bg-white rounded-lg shadow-lg">
         <div className="flex items-center justify-between mb-8">
           <button
             onClick={handleBackClick}
-            className="py-3 px-6 bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transition duration-300 transform hover:scale-105"
+            className="absolute top-8 left-8 py-3 px-6 bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transition duration-300 transform hover:scale-105"
           >
             Kembali
           </button>
           <h1 className="text-4xl font-bold text-center text-indigo-700 flex-grow">Add New User</h1>
         </div>
         <AddUserForm formData={formData} setFormData={handleInputChange} />
-      </div>
+      
     </div>
   );
 }
