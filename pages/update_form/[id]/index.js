@@ -37,6 +37,11 @@ export default function UpdateFormPage() {
                 const data = await response.json();
                 console.log("🚀 ~ fetchUser ~ response:", response)
                 setUserData(data);
+                if (typeof data !== 'object') {
+                    // Handle invalid data
+                    return;
+                  }
+                
                 const { name, email, salary, date, status } = data;
                 const [firstname, lastname] = name ? name.split(' ') : ['', ''];
                 setFormData({ firstname, lastname, email, salary, date, status });

@@ -2,9 +2,10 @@ import connectMongo from '../../../../database/conn';
 import { getUser, putUser, deleteUser } from '../../../../database/controller';
 
 export default async function handler(req, res) {
-    console.log("🚀 ~ handler ~ req:", req.params)
+    console.log("🚀 ~ handler ~ req:", req.query)
+    try{
     
-        connectMongo().catch(() => res.status(405).json({ error: "Error in the Connection"}))
+        await connectMongo().catch(() => res.status(405).json({ error: "Error in the Connection"}))
 
         // type of request
         const { method } = req
@@ -24,4 +25,8 @@ export default async function handler(req, res) {
                 res.status(405).end(`Method ${method} Not Allowd`)
                 break;
         }
+    }catch(error){
+        console.error("Error in handler:", error);
+        return res.status(500).json({ error: "Internal Server Error", details: error.message });
+    }
 }
