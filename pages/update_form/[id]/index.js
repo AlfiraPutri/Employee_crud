@@ -35,6 +35,7 @@ export default function UpdateFormPage() {
             try {
                 const response = await fetch(`/api/users/${id}`);
                 const data = await response.json();
+                console.log("🚀 ~ fetchUser ~ response:", response)
                 setUserData(data);
                 const { name, email, salary, date, status } = data;
                 const [firstname, lastname] = name ? name.split(' ') : ['', ''];

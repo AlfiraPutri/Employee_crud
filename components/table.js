@@ -61,6 +61,7 @@ function Tr({ _id, name, avatar, email, salary, date, status }) {
     const navigate = useRouter();
 
     const onUpdate = () => {
+        console.log("🚀 ~ onUpdate ~ _id:", _id)
         navigate.push(`/update_form/${_id}`);
     };
 
